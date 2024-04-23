@@ -1,0 +1,51 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Frontend</title>
+</head>
+<body>
+    <h1>Flask Frontend</h1>
+    <form id="inputForm">
+        <label for="inputValue">Enter Input:</label><br>
+        <input type="text" id="inputValue" name="inputValue"><br><br>
+        <button type="button" onclick="sendGetRequest()">Submit GET</button>
+        <button type="button" onclick="sendPostRequest()">Submit POST</button>
+    </form>
+    <div id="response"></div>
+
+    <script>
+        function sendGetRequest() {
+            var inputValue = document.getElementById('inputValue').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/get_input?input_value=' + inputValue, true);
+            xhr.onload = function () {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    document.getElementById('response').innerHTML = xhr.responseText;
+                } else {
+                    console.error(xhr.statusText);
+                }
+            };
+            xhr.send();
+        }
+
+        function sendPostRequest() {
+            var inputValue = document.getElementById('inputValue').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/post_input', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function () {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    document.getElementById('response').innerHTML = xhr.responseText;
+                } else {
+                    console.error(xhr.statusText);
+                }
+            };
+            var data = JSON.stringify({input_value: inputValue});
+            xhr.send(data);
+        }
+    </script>
+</body>
+</html>
